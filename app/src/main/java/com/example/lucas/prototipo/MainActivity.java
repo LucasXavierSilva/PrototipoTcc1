@@ -8,37 +8,31 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.Matrix;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.BitmapCompat;
-import android.support.v7.app.AppCompatActivity;
 import java.lang.Math;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.example.lucas.prototipo.select.CircleOverlayView;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private static final int RESULT_LOAD_IMAGE = 0;
     private static final int MY_PERMISSIONS_REQUEST_STORAGE = 1;
@@ -46,11 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     Math math;
-    Uri imageUri;
     ImageView iv_image, iv_color;
     TextView tv_color;
     Button b_pick;
-    CircleOverlayView cicleOverlay;
     float mediaR, mediaG, mediaB;
     int r, g, b;
     @Override
@@ -62,15 +54,13 @@ public class MainActivity extends AppCompatActivity {
         iv_color = (ImageView) findViewById(R.id.iv_color);
         tv_color = (TextView) findViewById(R.id.tv_color);
         b_pick = (Button) findViewById(R.id.b_pick);
-       // cicleOverlay = (CircleOverlayView) findViewById(R.id.cicleOverlay);
 
         getSupportActionBar().hide();
         setOnClickListeners();
         setOnTouchListeners();
 
-
-
     }
+
 
     private void setOnTouchListeners() {
         iv_image.setOnTouchListener(new View.OnTouchListener() {
@@ -78,33 +68,31 @@ public class MainActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public boolean onTouch(View v, MotionEvent motionEvent) {
-                if(!(iv_image.getDrawable() == null)){
+                if(!(iv_image.getDrawable() == null) && motionEvent.getAction() == MotionEvent.ACTION_DOWN){
 
                     DisplayMetrics metrics = new DisplayMetrics();
                     getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
                     int touchX = (int) motionEvent.getX();
                     int touchY = (int) motionEvent.getY();
+
+                    int[] arrayR = new int[256];
+                    int[] arrayG = new int[256];
+                    int[] arrayB = new int[256];
+
                     iv_image.buildDrawingCache();
 
-
-
-                    //Bitmap bitmap = iv_image.getDrawingCache();
-                    Bitmap bitmap = Bitmap.createBitmap(metrics, iv_image.getWidth(),
-                            iv_image.getHeight(),Bitmap.Config.ARGB_8888);
-
-                    bitmap = iv_image.getDrawingCache();
-                    //Bitmap bitmap = immutableBitmap.copy(Bitmap.Config.ARGB_8888, true);
-                    Drawable d = new BitmapDrawable(getResources(),bitmap);
+                    Bitmap bitmap = iv_image.getDrawingCache();
 
                     //Bitmap newBitmap = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmap.getConfig());
 
                     int valorMinimoR = 0, valorMaximoR = 0, valorMinimoG = 0,
                             valorMaximoG = 0, valorMinimoB = 0, valorMaximoB = 0;
-                    for (int x=-10; x < 10; x++){
-                        for (int y=-10; y < 10; y++) {
-                            if (!(bitmap.isRecycled()) && (touchX) > 0 && (touchY) > 0 && (touchX) < bitmap.getWidth() && (touchY) < bitmap.getHeight()) {
-                                int pixelColor = bitmap.getPixel(touchX+x, touchY+y);
+                    for (int x= 0; x < bitmap.getWidth(); x++){
+                        for (int y= 0; y < bitmap.getHeight(); y++) {
+                            int pixelColor = bitmap.getPixel(x, y);
+
+                            if (Color.red(pixelColor) != 0 && Color.green(pixelColor) != 0 && Color.blue(pixelColor) != 0) {
                                 int A = Color.alpha(pixelColor);
                                 int R = Color.red(pixelColor);
                                 int G = Color.green(pixelColor);
@@ -135,12 +123,16 @@ public class MainActivity extends AppCompatActivity {
                                 mediaG = (mediaG + G) / 2;
                                 mediaB = (mediaB + B) / 2;
 
-                                if (x == 0 && y == 0) {
+                                arrayR[R] += 1;
+                                arrayG[G] += 1;
+                                arrayB[B] += 1;
+
+                                if (x == touchX && y == touchY) {
                                     r = R;
-                                    g = G;
                                     b = B;
+                                    g = G;
                                 }
-                                if (x == 9 && y == 9) {
+                                if (x == bitmap.getWidth()/2 && y == bitmap.getHeight()/2) {
                                     tv_color.setText("\nVermelho: " + r + "\nVerde: " + g + "\nAzul: " + b +
                                             "\nMedia Vermelho: " + mediaR + "\nMedia Verde: " + mediaG + "\nMedia Azul: " + mediaB +
                                             "\nMenor/Maior Vermelho: " + valorMinimoR + "/" + valorMaximoR + "\nMenor/Maior Verde: " +
@@ -155,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     }
+                    int i = bitmap.getWidth();
                     //bitmap.recycle();
                 }
                 mediaR = 0;
