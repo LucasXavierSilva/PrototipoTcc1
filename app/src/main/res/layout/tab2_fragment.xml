@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="25sp"
+        android:text="Tab2"
+        android:layout_marginTop="40dp"
+        android:id="@+id/textTab2"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/lineChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="1" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineChart"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/btnRefresh"
+        android:text="Atualizar"/>
+
+    <Button
+        android:id="@+id/btnClear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/lineChart"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_toEndOf="@+id/btnRefresh"
+        android:layout_toRightOf="@+id/btnRefresh"
+        android:text="Resetar" />
+
+
+</RelativeLayout>
