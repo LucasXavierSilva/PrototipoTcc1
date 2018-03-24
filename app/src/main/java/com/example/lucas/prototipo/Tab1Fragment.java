@@ -229,7 +229,7 @@ public class Tab1Fragment extends Fragment {
         CropImage.activity()
                 .setGuidelines(CropImageView.Guidelines.ON)
                 .setActivityTitle("My Crop")
-                .setCropShape(CropImageView.CropShape.OVAL)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
                 .setCropMenuCropButtonTitle("Done")
                 .setRequestedSize(400, 400)
                 .setCropMenuCropButtonIcon(R.drawable.ic_launcher)
