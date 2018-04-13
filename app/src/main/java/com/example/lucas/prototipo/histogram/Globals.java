@@ -20,6 +20,10 @@ public class Globals {
 
     private int maxRepeated;
 
+    private int maxRepeatedRed;
+    private int maxRepeatedGreen;
+    private int maxRepeatedBlue;
+
     private double meanRed;
     private double meanGreen;
     private double meanBlue;
@@ -163,6 +167,57 @@ public class Globals {
 
     public void setMedianBlue(double medianBlue) {
         this.medianBlue = medianBlue;
+    }
+
+    public int getMaxRepeatedRed() {
+        return maxRepeatedRed;
+    }
+
+    public void setMaxRepeatedRed() {
+        maxRepeatedRed = 0;
+        int aux = 0;
+        for(int i=0; i<=255;i++)
+        {
+            if(arrayRed[i]>aux){
+                aux = arrayRed[i];
+                maxRepeatedRed = i;
+            }
+        }
+        this.maxRepeatedRed = maxRepeatedRed;
+    }
+
+    public int getMaxRepeatedGreen() {
+        return maxRepeatedGreen;
+    }
+
+    public void setMaxRepeatedGreen() {
+        maxRepeatedGreen = 0;
+        int aux = 0;
+        for(int i=0; i<=255;i++)
+        {
+            if(arrayGreen[i]>aux){
+                aux = arrayGreen[i];
+                maxRepeatedGreen = i;
+            }
+        }
+        this.maxRepeatedGreen = maxRepeatedGreen;
+    }
+
+    public int getMaxRepeatedBlue() {
+        return maxRepeatedBlue;
+    }
+
+    public void setMaxRepeatedBlue() {
+        maxRepeatedBlue = 0;
+        int aux = 0;
+        for(int i=0; i<=255;i++)
+        {
+            if(arrayBlue[i]>aux){
+                aux = arrayBlue[i];
+                maxRepeatedBlue = i;
+            }
+        }
+        this.maxRepeatedBlue = maxRepeatedBlue;
     }
 
     public int getMaxRepeated(){

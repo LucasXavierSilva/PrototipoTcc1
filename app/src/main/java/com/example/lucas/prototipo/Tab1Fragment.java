@@ -74,6 +74,7 @@ public class Tab1Fragment extends Fragment {
         iv_image = (ImageView) view.findViewById(R.id.iv_image);
         iv_color = (ImageView) view.findViewById(R.id.iv_color);
         tv_color = (TextView) view.findViewById(R.id.tv_color);
+
         b_pick = (Button) view.findViewById(R.id.b_pick);
 
 
@@ -172,21 +173,6 @@ public class Tab1Fragment extends Fragment {
 
                     lumaPrecisa = lumaR + lumaG + lumaB;
                     lumaPrecisa = Math.sqrt(lumaPrecisa);
-                    //lumaPrecisa = (float) Math.sqrt ( Math.pow((0.299 * mediaR), 2)  + Math.pow((0.587 * mediaG), 2) + Math.pow((0.114 * mediaB), 2));
-
-                    tv_color.setText("\nVermelho: " + r + "\nVerde: " + g + "\nAzul: " + b +
-                            "\nMedia Vermelho: " + mediaR + "\nMedia Verde: " + mediaG + "\nMedia Azul: " + mediaB +
-                            "\nMenor/Maior Vermelho: " + valorMinimoR + "/" + valorMaximoR + "\nMenor/Maior Verde: " +
-                            valorMinimoG + "/" + valorMaximoG + "\nMenor/Maior Azul: " + valorMinimoB + "/" + valorMaximoB +
-                            "\nLuma: " + luma + "\nLuma Precisa: " + lumaPrecisa);
-
-                    int rr = (int) math.round(mediaR);
-                    int gg = (int) math.round(mediaG);
-                    int bb = (int) math.round(mediaB);
-                    iv_color.setBackgroundColor(Color.rgb(rr, gg, bb));
-
-                    int i = bitmap.getWidth();
-                    //bitmap.recycle();
 
                     globals.setArrayRed(arrayR);
                     globals.setArrayGreen(arrayG);
@@ -196,10 +182,6 @@ public class Tab1Fragment extends Fragment {
                     globals.setMeanGreen(mediaG);
                     globals.setMeanBlue(mediaB);
 
-                    //globals.setMedianRed(medianaR);
-                    //globals.setMedianGreen(medianaG);
-                    //globals.setMedianBlue(medianaB);
-
                     globals.setMinRed(valorMinimoR);
                     globals.setMinGreen(valorMinimoG);
                     globals.setMinBlue(valorMinimoB);
@@ -207,6 +189,45 @@ public class Tab1Fragment extends Fragment {
                     globals.setMaxRed(valorMaximoR);
                     globals.setMaxGreen(valorMaximoG);
                     globals.setMaxBlue(valorMaximoB);
+
+                    globals.setMaxRepeatedRed();
+                    globals.setMaxRepeatedGreen();
+                    globals.setMaxRepeatedBlue();
+
+                    //Calculating means values
+                    if(1%(globals.getMaxRed() - globals.getMinRed()) == 0)
+                        globals.setMeanRed(((globals.getMaxRed() - globals.getMinRed())/2 + globals.getMaxRed() - globals.getMinRed()+1/2) +
+                        globals.getMinRed());
+                    else
+                        globals.setMeanRed((globals.getMaxRed() - globals.getMinRed())/2 + globals.getMinRed());
+
+                    if(1%(globals.getMaxGreen() - globals.getMinGreen()) == 0)
+                        globals.setMeanGreen(((globals.getMaxGreen() - globals.getMinGreen())/2 + globals.getMaxGreen() - globals.getMinGreen()+1/2) +
+                                globals.getMinGreen());
+                    else
+                        globals.setMeanGreen((globals.getMaxGreen() - globals.getMinGreen())/2 + globals.getMinGreen());
+
+                    if(1%(globals.getMaxBlue() - globals.getMinBlue()) == 0)
+                        globals.setMeanBlue(((globals.getMaxBlue() - globals.getMinBlue())/2 + globals.getMaxBlue() - globals.getMinBlue()+1/2) +
+                                globals.getMinBlue());
+                    else
+                        globals.setMeanBlue((globals.getMaxBlue() - globals.getMinBlue())/2 + globals.getMinBlue());
+                    //lumaPrecisa = (float) Math.sqrt ( Math.pow((0.299 * mediaR), 2)  + Math.pow((0.587 * mediaG), 2) + Math.pow((0.114 * mediaB), 2));
+
+                    tv_color.setText("\nMediana Vermelho: " + globals.getMeanRed() + "\nMediana Verde: " + globals.getMeanGreen()
+                            + "\nMediana Azul: " + globals.getMeanBlue() +"\nMedia Vermelho: " + mediaR + "\nMedia Verde: " + mediaG + "" +
+                            "\nMedia Azul: " + mediaB + "\nMenor/Maior Vermelho: " + valorMinimoR + "/" + valorMaximoR +
+                            "\nMenor/Maior Verde: " + valorMinimoG + "/" + valorMaximoG + "\nMenor/Maior Azul: " + valorMinimoB +
+                            "/" + valorMaximoB + "\nLuma: " + luma + "\nLuma Precisa: " + lumaPrecisa);
+
+
+                    int rr = (int) math.round(mediaR);
+                    int gg = (int) math.round(mediaG);
+                    int bb = (int) math.round(mediaB);
+                    iv_color.setBackgroundColor(Color.rgb(rr, gg, bb));
+
+                    int i = bitmap.getWidth();
+                    //bitmap.recycle();
 
                     for(int i2 = 0; i2 == 256; i2++){
                         arrayR[i2] = 0;

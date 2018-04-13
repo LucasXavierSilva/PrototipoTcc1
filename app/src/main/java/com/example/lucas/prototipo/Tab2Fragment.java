@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.lucas.prototipo.histogram.Globals;
@@ -32,6 +33,7 @@ public class Tab2Fragment extends Fragment {
 
     public Button btnRefresh, btnClear;
     Globals globals = Globals.getInstance();
+    TextView tv_color, tv_max_color;
 
     LineChart lineChart;
 
@@ -48,6 +50,7 @@ public class Tab2Fragment extends Fragment {
         btnRefresh = (Button) view.findViewById(R.id.btnRefresh);
         btnClear = (Button) view.findViewById(R.id.btnClear);
         lineChart = (LineChart) view.findViewById(R.id.lineChart);
+        tv_max_color = (TextView) view.findViewById(R.id.tv_maximum_color);
 
         btnRefresh.setOnClickListener(clickListener);
         btnClear.setOnClickListener(clickListener);
@@ -144,6 +147,9 @@ public class Tab2Fragment extends Fragment {
 
         //can also try calling invalidate() to refresh the graph
         lineChart.invalidate();
+
+        tv_max_color.setText("\nMáximo Vermelho: " + globals.getMaxRepeatedRed() + "\nMáximo Verde: " + globals.getMaxRepeatedGreen()
+                + "\nMáximo Azul: " + globals.getMaxRepeatedBlue());
 
     }
 }
